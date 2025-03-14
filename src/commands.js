@@ -215,19 +215,31 @@ async function saveInviteCode(data) {
 
 // Handle command interactions
 async function handleCommands(interaction) {
-// Check if the command is used in the correct channel
-if (interaction.channel.name !== 'invite-codes') {
-  return interaction.reply({ 
-    content: 'This command can only be used in the #invite-codes channel!', 
-    ephemeral: true 
-  });
-}
-
-if (interaction.commandName === 'startquiz') {
-  await handleStartQuiz(interaction);
-} else if (interaction.commandName === 'help') {
-  await handleHelp(interaction);
-}
+  try {
+    // Check if the command is used in the correct channel
+    if (interaction.channel.name !== 'invite-codes') {
+      return interaction.reply({ 
+        content: 'This command can only be used in the #invite-codes channel!', 
+        ephemeral: true 
+      });
+    }
+    
+    if (interaction.commandName === 'startquiz') {
+      await handleStartQuiz(interaction);
+    } else if (interaction.commandName === 'help') {
+      await handleHelp(interaction);
+    }
+  } catch (error) {
+    console.error('Error handling command:', error);
+    
+    // If we haven't replied to the interaction yet, send an error response
+    if (!interaction.replied && !interaction.deferred) {
+      await interaction.reply({ 
+        content: 'Sorry, something went wrong processing your command. Please try again later.', 
+        ephemeral: true 
+      });
+    }
+  }
 }
 
 // Handle button interactions
