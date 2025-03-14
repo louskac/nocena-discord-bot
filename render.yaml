@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: nocena-discord-bot
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: DISCORD_TOKEN
+        sync: false
+      - key: DISCORD_CLIENT_ID
+        sync: false
+      - key: DGRAPH_ENDPOINT
+        sync: false
+      - key: DGRAPH_API_KEY
+        sync: false
