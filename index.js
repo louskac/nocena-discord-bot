@@ -2,6 +2,7 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits, REST, Routes } = require('discord.js');
 const { registerCommands, handleCommands, handleButtons, handleModals } = require('./src/commands');
+const http = require('http');
 
 // Initialize Discord client
 const client = new Client({
@@ -30,3 +31,14 @@ client.on('interactionCreate', async interaction => {
 
 // Login to Discord
 client.login(process.env.DISCORD_TOKEN);
+
+// Create a simple HTTP server to satisfy Render's port binding requirement
+const PORT = process.env.PORT || 3000;
+const server = http.createServer((req, res) => {
+  res.writeHead(200);
+  res.end('Nocena Discord Bot is running!');
+});
+
+server.listen(PORT, () => {
+  console.log(`HTTP server is running on port ${PORT}`);
+});
